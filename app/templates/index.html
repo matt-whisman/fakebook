@@ -1,0 +1,14 @@
+{% extends './layout.html' %} {% block content %}
+<div class="container">
+  <h1>HOME</h1>
+  <p>Welcome to Fakebook {{ user }}</p>
+
+  {% for u in users %}
+  <div class="card"></div>
+  <h2>{{ u }}</h2>
+  <p>Eye Color: {{ users[u]['eyeColor'] }}</p>
+  <p>Hair Color: {{ users[u]['hairColor'] }}</p>
+  {% endfor %}
+</div>
+
+{% endblock content %}
