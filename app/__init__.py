@@ -1,42 +1,26 @@
-from flask import Flask, render_template
+from config import Config
+from flask import Flask
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
 def create_app():
     app = Flask(__name__)
 
-    # ALL APP CONFIG GOES HERE
-    @app.route("/")
-    def home():
-        user_dict = {
-            "lucas": {
-                "eyeColor": "blue",
-                "hairColor": "brown"
-            },
-            "joe": {
-                "eyeColor": "gray",
-                "hairColor": "black"
-            },
-            "kevin": {
-                "eyeColor": "green",
-                "hairColor": "blonde"
-            }
-        }
-        context = {
-            "users": user_dict,
-            "user": "matt",
-        }
-        return render_template('index.html', **context)
+    # Connect our config class to the application instance
+    app.config.from_object(Config)
 
-    @app.route("/about")
-    def about():
-        return render_template('about.html')
+    migrate = Migrate()
 
-    @app.route("/countact")
-    def contact():
-        return render_template('contact.html')
+    db.init_app(app)
+    migrate.init_app(app, db)
 
-    @app.route("/blog")
-    def blog():
-        return render_template('blog.html')
+    from app.blueprints.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    from app.blueprints.api import bp as api_bp
+    app.register_blueprint(api_bp)
 
     return app
