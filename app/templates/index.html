@@ -1,14 +1,31 @@
-{% extends './layout.html' %} {% block content %}
+{% extends './layout.html' %}
+
+{% block content %}
 <div class="container">
   <h1>HOME</h1>
   <p>Welcome to Fakebook {{ user }}</p>
 
-  {% for u in users %}
-  <div class="card"></div>
-  <h2>{{ u }}</h2>
-  <p>Eye Color: {{ users[u]['eyeColor'] }}</p>
-  <p>Hair Color: {{ users[u]['hairColor'] }}</p>
+
+  <form action="http://127.0.0.1:5000/api/status-update" method="post" class="row g-3">
+    <div class="col-9 mb-3 g-3">
+        <label for="statusInput" class="form-label">Status update</label>
+        <input type="text" name="statusInput" id="statusInput" class="form-control" placeholder="Update status here">
+      <div class="col-3 g-3"><button type="submit" class="btn btn-primary mb-3">Submit</button></div>
+    </div>
+  </form>
+
+
+  {% for p in posts %}
+  <div class="card mb-2">
+    <div class="card-body">
+      <h2>{{ p.body }}</h2>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <span>{{ p.get_user().username }}</span>
+      <span>{{ p.date_created}} </span>
+    </div>
+  </div>
   {% endfor %}
-</div>
+</div> 
 
 {% endblock content %}

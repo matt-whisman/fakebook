@@ -1,27 +1,15 @@
 from flask import render_template
 from . import bp as app
+from app.blueprints.main.models import Post
 
 
 @app.route("/")
 def home():
-    user_dict = {
-        "lucas": {
-            "eyeColor": "blue",
-            "hairColor": "brown"
-        },
-        "joe": {
-            "eyeColor": "gray",
-            "hairColor": "black"
-        },
-        "kevin": {
-            "eyeColor": "brown",
-            "hairColor": "blonde"
-        }
-    }
-
+    posts = Post.query.all()
+    posts.sort(key=lambda post: post.date_created, reverse=True)
+    
     context = {
-        "users": user_dict,
-        "user": "jen"
+        "posts": posts,
     }
 
     return render_template('index.html', **context)
