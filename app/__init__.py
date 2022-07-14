@@ -17,6 +17,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
+    # register blueprints with our app instance
     from app.blueprints.main import bp as main_bp
     app.register_blueprint(main_bp)
 
